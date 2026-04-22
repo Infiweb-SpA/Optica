@@ -65,7 +65,6 @@ def contact():
 @app.cli.command('init-db')
 def init_db_command():
     """Crea las tablas y carga datos de demostración."""
-    db.drop_all()
     db.create_all()
     
     # Marcos de ejemplo
