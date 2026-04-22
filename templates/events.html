@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block title %}Eventos y Operativos | OpticClarity{% endblock %}
+
+{% block content %}
+<main class="pt-32 pb-24 max-w-7xl mx-auto px-8">
+    <!-- Banner principal del evento destacado -->
+    <section class="mb-20">
+        <div class="flex flex-col mb-8">
+            <span class="text-secondary font-label-caps uppercase tracking-widest mb-2">Evento Destacado</span>
+            <h1 class="font-headline-xl text-primary">Operativo de Visión 2024</h1>
+        </div>
+        {% if featured %}
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 h-auto lg:h-[500px]">
+            <div class="lg:col-span-7 relative overflow-hidden rounded-xl bg-slate-200 group">
+                <img alt="{{ featured.title }}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                     src="{{ featured.image_url }}"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-8 left-8 text-white">
+                    <div class="flex items-center gap-2 bg-secondary/90 backdrop-blur-sm px-3 py-1 rounded text-sm font-bold mb-4 w-fit">
+                        <span class="material-symbols-outlined text-sm">event</span> PRÓXIMA SEMANA
+                    </div>
+                    <h2 class="font-headline-lg mb-2">{{ featured.title }}</h2>
+                    <p class="font-body-lg text-slate-200 max-w-md">{{ featured.description }}</p>
+                </div>
+            </div>
+            <div class="lg:col-span-5 grid grid-rows-2 gap-6">
+                <div class="bg-surface-container-highest rounded-xl p-8 flex flex-col justify-between border border-outline-variant">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-on-tertiary-fixed-variant font-label-caps">FECHA Y HORA</p>
+                            <p class="font-headline-md text-primary mt-1">{{ featured.event_date.strftime('%d de %B, %Y') }}</p>
+                            <p class="text-body-md text-on-surface-variant">09:00 AM - 04:00 PM</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-lg shadow-sm">
+                            <span class="material-symbols-outlined text-secondary text-3xl">calendar_today</span>
+                        </div>
+                    </div>
+                    <div class="pt-6 border-t border-outline-variant/30">
+                        <p class="text-on-tertiary-fixed-variant font-label-caps">UBICACIÓN</p>
+                        <p class="text-body-lg font-semibold text-primary">{{ featured.location }}</p>
+                        <div class="flex items-center gap-1 text-secondary mt-1">
+                            <span class="material-symbols-outlined text-sm">location_on</span>
+                            <span class="text-sm font-bold">Cómo llegar</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-primary text-on-primary rounded-xl p-8 flex flex-col justify-between">
+                    <div>
+                        <p class="font-label-caps text-on-primary-container">BENEFICIOS</p>
+                        <ul class="mt-4 space-y-3">
+                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-fixed text-lg">check_circle</span> Exámenes completos gratuitos</li>
+                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-fixed text-lg">check_circle</span> 40% de descuento en marcos</li>
+                            <li class="flex items-center gap-3"><span class="material-symbols-outlined text-secondary-fixed text-lg">check_circle</span> Mejoras de antirreflejo</li>
+                        </ul>
+                    </div>
+                    <button class="w-full bg-secondary text-white py-3 rounded font-bold hover:bg-secondary/90 transition-colors mt-6">Registrarse</button>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="bg-surface-container-lowest p-8 rounded-xl text-center">No hay evento destacado en este momento.</div>
+        {% endif %}
+    </section>
+
+    <!-- Búsqueda y filtros -->
+    <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+        <h3 class="font-headline-lg text-primary">Todos los anuncios</h3>
+        <div class="flex gap-4 w-full md:w-auto">
+            <div class="relative flex-grow md:w-64">
+                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-tertiary-container">search</span>
+                <input class="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded focus:border-secondary focus:ring-0 text-sm" placeholder="Buscar eventos..." type="text"/>
+            </div>
+            <button class="px-4 py-2 bg-white border border-outline-variant rounded flex items-center gap-2 text-sm font-semibold">
+                <span class="material-symbols-outlined text-sm">filter_list</span> Filtrar
+            </button>
+        </div>
+    </div>
+
+    <!-- Grid de eventos -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Próximos eventos -->
+        {% for event in upcoming %}
+        <div class="bg-white rounded-xl overflow-hidden border border-slate-200 group hover:shadow-lg transition-shadow duration-300">
+            <div class="h-48 overflow-hidden relative">
+                <img alt="{{ event.title }}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                     src="{{ event.image_url }}"/>
+                <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded text-[10px] font-bold text-primary uppercase">Próximo</div>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center gap-2 text-secondary mb-2">
+                    <span class="material-symbols-outlined text-sm">calendar_month</span>
+                    <span class="text-xs font-bold font-label-caps">{{ event.event_date.strftime('%b %d, %Y').upper() }}</span>
+                </div>
+                <h4 class="font-headline-md text-primary mb-3">{{ event.title }}</h4>
+                <p class="text-on-surface-variant text-body-md mb-6 line-clamp-2">{{ event.description }}</p>
+                <div class="flex gap-3">
+                    <button class="flex-1 bg-surface-container-high text-primary py-2 rounded text-xs font-bold hover:bg-slate-200 transition-colors">Más info</button>
+                    <button class="flex-1 border border-secondary text-secondary py-2 rounded text-xs font-bold hover:bg-secondary hover:text-white transition-colors">Guardar fecha</button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- Eventos pasados -->
+        {% for event in past %}
+        <div class="bg-white/60 rounded-xl overflow-hidden border border-slate-200 group grayscale hover:grayscale-0 transition-all duration-300 opacity-80 hover:opacity-100">
+            <div class="h-48 overflow-hidden relative">
+                <img alt="{{ event.title }}" class="w-full h-full object-cover" src="{{ event.image_url }}"/>
+                <div class="absolute top-4 left-4 bg-slate-500 text-white px-3 py-1 rounded text-[10px] font-bold uppercase">Completado</div>
+            </div>
+            <div class="p-6">
+                <div class="flex items-center gap-2 text-slate-500 mb-2">
+                    <span class="material-symbols-outlined text-sm">calendar_month</span>
+                    <span class="text-xs font-bold font-label-caps">{{ event.event_date.strftime('%b %d, %Y').upper() }}</span>
+                </div>
+                <h4 class="font-headline-md text-primary mb-3">{{ event.title }}</h4>
+                <p class="text-on-surface-variant text-body-md mb-6 line-clamp-2">{{ event.description }}</p>
+                <button class="w-full bg-slate-100 text-slate-500 py-2 rounded text-xs font-bold">Ver galería</button>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Visual Health Tracker (Impacto comunitario) -->
+    <section class="mt-24 bg-secondary-container rounded-2xl p-10 flex flex-col md:flex-row items-center gap-12 border border-secondary/10">
+        <div class="flex-1">
+            <h3 class="font-headline-lg text-secondary mb-4">Tu Impacto en Salud Comunitaria</h3>
+            <p class="text-body-lg text-on-secondary-container mb-8">Hemos ayudado a más de 2,500 vecinos a ver con claridad este año. Ayúdanos a llegar a 5,000.</p>
+            <div class="bg-white/50 rounded-xl p-6 backdrop-blur-sm">
+                <div class="flex justify-between items-end mb-2">
+                    <span class="font-label-caps text-secondary">PERSONAS ATENDIDAS</span>
+                    <span class="font-headline-md text-secondary">2,548 / 5,000</span>
+                </div>
+                <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden">
+                    <div class="bg-secondary h-full" style="width: 51%"></div>
+                </div>
+            </div>
+        </div>
+        <div class="w-full md:w-1/3 flex justify-center">
+            <div class="relative">
+                <div class="w-48 h-48 rounded-full border-8 border-secondary flex items-center justify-center bg-white shadow-xl">
+                    <div class="text-center">
+                        <p class="text-4xl font-bold text-secondary">51%</p>
+                        <p class="text-[10px] font-bold uppercase tracking-tighter text-slate-400">Progreso</p>
+                    </div>
+                </div>
+                <div class="absolute -bottom-4 -right-4 bg-primary text-white p-4 rounded-full shadow-lg">
+                    <span class="material-symbols-outlined text-2xl">volunteer_activism</span>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- FAB para agendar -->
+<button class="fixed bottom-8 right-8 bg-secondary text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40">
+    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_add_on</span>
+</button>
+{% endblock %}

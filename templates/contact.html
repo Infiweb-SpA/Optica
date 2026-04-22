@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block title %}Contacto y Ubicación | OpticClarity{% endblock %}
+
+{% block content %}
+<main class="pt-32 pb-16 max-w-7xl mx-auto px-8">
+    <!-- Hero Header -->
+    <header class="mb-16 text-center md:text-left">
+        <h1 class="font-headline-xl text-primary mb-4">Atención de Precisión, a tu Alcance</h1>
+        <p class="font-body-lg text-on-surface-variant max-w-2xl">Conéctate con nuestros expertos clínicos para evaluaciones oculares o visita nuestro estudio para explorar las últimas colecciones.</p>
+    </header>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+        <!-- Columna de información y horario -->
+        <div class="lg:col-span-5 space-y-gutter">
+            <!-- Tarjeta de detalles -->
+            <div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-xl">
+                <h2 class="font-headline-md text-primary mb-6">Detalles de la Tienda</h2>
+                <div class="space-y-6">
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                        <div>
+                            <p class="font-label-caps text-on-tertiary-container uppercase mb-1">Visítanos</p>
+                            <p class="font-body-md text-on-surface">1280 Clarity Avenue, Suite 100<br/>Optical District, NY 10012</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">call</span>
+                        <div>
+                            <p class="font-label-caps text-on-tertiary-container uppercase mb-1">Voz y Mensajes</p>
+                            <p class="font-body-md text-on-surface">+1 (212) 555-8900</p>
+                            <p class="font-body-md text-secondary mt-1 flex items-center gap-1 cursor-pointer hover:underline">
+                                <span class="material-symbols-outlined text-base">chat</span> WhatsApp
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-4">
+                        <span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">mail</span>
+                        <div>
+                            <p class="font-label-caps text-on-tertiary-container uppercase mb-1">Correo Electrónico</p>
+                            <p class="font-body-md text-on-surface">concierge@opticclarity.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Horario de atención -->
+            <div class="bg-primary text-on-primary p-8 rounded-xl">
+                <div class="flex items-center gap-3 mb-6">
+                    <span class="material-symbols-outlined text-secondary-fixed">schedule</span>
+                    <h2 class="font-headline-md">Horario de Atención</h2>
+                </div>
+                <div class="space-y-3 font-body-md">
+                    <div class="flex justify-between border-b border-primary-container pb-2">
+                        <span class="opacity-80">Lunes – Viernes</span>
+                        <span class="font-bold">09:00 – 19:00</span>
+                    </div>
+                    <div class="flex justify-between border-b border-primary-container pb-2">
+                        <span class="opacity-80">Sábado</span>
+                        <span class="font-bold">10:00 – 18:00</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="opacity-80">Domingo</span>
+                        <span class="text-secondary-fixed font-bold">Cerrado por investigación</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recordatorio de salud visual -->
+            <div class="bg-surface-container p-8 rounded-xl border border-outline-variant">
+                <h3 class="font-label-caps text-on-surface mb-4 uppercase">Recordatorio de Examen</h3>
+                <div class="relative h-2 w-full bg-surface-variant rounded-full overflow-hidden mb-3">
+                    <div class="absolute top-0 left-0 h-full bg-secondary w-3/4 rounded-full"></div>
+                </div>
+                <p class="text-xs font-body-md text-on-surface-variant italic">Tu próximo examen ocular se recomienda en 3 meses.</p>
+            </div>
+        </div>
+
+        <!-- Columna de formulario y mapa -->
+        <div class="lg:col-span-7 space-y-gutter">
+            <!-- Formulario de contacto -->
+            <div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-xl">
+                <h2 class="font-headline-md text-primary mb-8">Envía una Consulta Clínica</h2>
+                <form class="grid grid-cols-1 md:grid-cols-2 gap-6" method="POST" action="#">
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-caps text-on-surface-variant uppercase">Nombre Completo</label>
+                        <input class="rounded-lg border-outline-variant focus:border-secondary focus:ring-secondary p-3 font-body-md" placeholder="Ej. Jonathan Doe" type="text" name="name"/>
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="font-label-caps text-on-surface-variant uppercase">Correo Electrónico</label>
+                        <input class="rounded-lg border-outline-variant focus:border-secondary focus:ring-secondary p-3 font-body-md" placeholder="nombre@dominio.com" type="email" name="email"/>
+                    </div>
+                    <div class="md:col-span-2 flex flex-col gap-2">
+                        <label class="font-label-caps text-on-surface-variant uppercase">Motivo de Contacto</label>
+                        <select class="rounded-lg border-outline-variant focus:border-secondary focus:ring-secondary p-3 font-body-md" name="reason">
+                            <option>Nueva Receta</option>
+                            <option>Reparación de Marcos</option>
+                            <option>Alianza Corporativa</option>
+                            <option>Comentarios Generales</option>
+                        </select>
+                    </div>
+                    <div class="md:col-span-2 flex flex-col gap-2">
+                        <label class="font-label-caps text-on-surface-variant uppercase">Tu Mensaje</label>
+                        <textarea class="rounded-lg border-outline-variant focus:border-secondary focus:ring-secondary p-3 font-body-md" placeholder="¿Cómo podemos ayudarte?" rows="4" name="message"></textarea>
+                    </div>
+                    <div class="md:col-span-2">
+                        <button class="w-full bg-secondary text-on-secondary py-4 rounded-lg font-headline-md hover:opacity-90 transition-all shadow-sm active:scale-[0.98]" type="submit">
+                            Enviar Consulta
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Mapa (placeholder) -->
+            <div class="rounded-xl overflow-hidden border border-outline-variant relative group h-[400px]">
+                <div class="absolute inset-0 bg-slate-200 flex items-center justify-center">
+                    <div class="w-full h-full grayscale opacity-80"
+                         style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCuC20Emp2mEKIMh4d2PusAwQar4P7SWt7zVQVh1a-9nUVIUDFdvR7SZmllweVOtFWpfYtOkOmyGNzh8A3pDCSeHrsss8a_cvyzGxQb2TfJyVyIl3MzbVz4Jwt7O6c2gz8qX5nOpCJ61a6cSk06_rnWdoCKADdMXFHrNNrsNgUfL6z0Bj7uwKAxxVIWH8-1eHult_pRFdLgyaXqRBfj-7BIUcq8wu7as8RWRmbxdQqQVZwo9-o0IRJkbKNjDBU_F8nKaFKA1suU_W0'); background-size: cover; background-position: center;"></div>
+                    <div class="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+                    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white p-3 rounded-full shadow-xl flex items-center justify-center">
+                        <span class="material-symbols-outlined text-error text-3xl" style="font-variation-settings: 'FILL' 1;">location_on</span>
+                    </div>
+                </div>
+                <div class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-md p-4 rounded-lg border border-outline-variant max-w-xs">
+                    <p class="font-headline-md text-sm text-primary">Ubicación del Estudio Principal</p>
+                    <p class="font-body-md text-xs text-on-surface-variant">En el corazón del distrito, frente a la Plaza Central.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

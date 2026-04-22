@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% block title %}Catálogo | OpticClarity{% endblock %}
+
+{% block content %}
+<main class="pt-32 pb-24 max-w-7xl mx-auto px-8">
+    <!-- Cabecera del catálogo -->
+    <section class="mb-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div>
+                <span class="text-secondary font-label-caps uppercase tracking-widest">Colección Premium</span>
+                <h1 class="font-headline-xl text-primary mt-2">Marcos y Lentes</h1>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="text-on-surface-variant text-body-md">{{ products|length }} productos</span>
+                <div class="h-8 w-px bg-outline-variant"></div>
+                <button class="flex items-center gap-2 text-primary font-headline-md text-sm border border-outline rounded-lg px-4 py-2 hover:bg-surface-container transition-colors">
+                    Ordenar: Destacados <span class="material-symbols-outlined text-lg">expand_more</span>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Layout principal con filtros -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <!-- Sidebar de filtros -->
+        <aside class="lg:col-span-3 space-y-10">
+            <!-- Filtro por tipo -->
+            <div>
+                <h3 class="font-headline-md text-lg mb-4 text-primary">Tipo</h3>
+                <div class="flex flex-col gap-3">
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="rounded-sm border-outline text-secondary focus:ring-secondary w-5 h-5" type="radio" name="type" value="all"
+                               {% if type_filter == 'all' %}checked{% endif %} onchange="window.location.href='?type=all'">
+                        <span class="text-body-md text-on-surface-variant group-hover:text-on-surface">Todos</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="rounded-sm border-outline text-secondary focus:ring-secondary w-5 h-5" type="radio" name="type" value="frame"
+                               {% if type_filter == 'frame' %}checked{% endif %} onchange="window.location.href='?type=frame'">
+                        <span class="text-body-md text-on-surface-variant group-hover:text-on-surface">Marcos</span>
+                    </label>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input class="rounded-sm border-outline text-secondary focus:ring-secondary w-5 h-5" type="radio" name="type" value="lens"
+                               {% if type_filter == 'lens' %}checked{% endif %} onchange="window.location.href='?type=lens'">
+                        <span class="text-body-md text-on-surface-variant group-hover:text-on-surface">Lentes</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Filtro por estilo (solo para marcos) -->
+            <div>
+                <h3 class="font-headline-md text-lg mb-4 text-primary">Estilo</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for style in styles %}
+                    <a href="?type=frame&style={{ style }}"
+                       class="px-4 py-2 rounded-full border {% if request.args.get('style') == style %}border-secondary bg-secondary-container text-secondary{% else %}border-outline-variant bg-white text-on-surface-variant{% endif %} text-sm font-label-caps hover:border-secondary hover:text-secondary transition-all">
+                        {{ style }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Filtro por material -->
+            <div>
+                <h3 class="font-headline-md text-lg mb-4 text-primary">Material</h3>
+                <div class="flex flex-wrap gap-2">
+                    {% for material in materials %}
+                    <a href="?material={{ material }}"
+                       class="px-4 py-2 rounded-full border {% if request.args.get('material') == material %}border-secondary bg-secondary-container text-secondary{% else %}border-outline-variant bg-white text-on-surface-variant{% endif %} text-sm font-label-caps hover:border-secondary hover:text-secondary transition-all">
+                        {{ material }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Rango de precio (simulado) -->
+            <div>
+                <h3 class="font-headline-md text-lg mb-4 text-primary">Precio</h3>
+                <div class="px-2">
+                    <input class="w-full h-1 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-secondary" max="1000" min="100" step="50" type="range"/>
+                    <div class="flex justify-between mt-3">
+                        <span class="text-body-md text-on-surface-variant">$100</span>
+                        <span class="text-body-md text-on-surface-variant">$1000</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Grid de productos -->
+        <div class="lg:col-span-9">
+            <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-x-8 gap-y-12">
+                {% for product in products %}
+                <div class="group cursor-pointer">
+                    <div class="aspect-[4/5] bg-white border border-slate-200 rounded-lg overflow-hidden relative transition-all group-hover:shadow-lg group-hover:-translate-y-1">
+                        <div class="absolute top-4 right-4 z-10">
+                            <button class="w-10 h-10 bg-white/80 backdrop-blur rounded-full flex items-center justify-center text-on-surface hover:text-error transition-colors shadow-sm">
+                                <span class="material-symbols-outlined">favorite</span>
+                            </button>
+                        </div>
+                        <img class="w-full h-full object-cover mix-blend-multiply group-hover:scale-105 transition-transform duration-500"
+                             alt="{{ product.name }}" src="{{ product.image_url or 'https://via.placeholder.com/400x500?text='+product.name }}"/>
+                        {% if product.type == 'frame' %}
+                        <div class="absolute bottom-4 left-4">
+                            <span class="bg-primary text-on-primary text-[10px] font-label-caps px-2 py-1 rounded">NUEVO</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="mt-6 space-y-1">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-on-tertiary-container font-label-caps text-xs">{{ product.brand }}</p>
+                                <h4 class="font-headline-md text-lg text-primary">{{ product.name }}</h4>
+                            </div>
+                            <span class="font-headline-md text-secondary">${{ "%.0f"|format(product.price) }}</span>
+                        </div>
+                        {% if product.type == 'frame' %}
+                        <div class="flex gap-1.5 pt-2">
+                            <div class="w-3 h-3 rounded-full bg-{{ product.color|lower }} border border-outline"></div>
+                        </div>
+                        {% else %}
+                        <p class="text-xs text-on-surface-variant mt-2">{{ product.description|truncate(60) }}</p>
+                        <div class="flex flex-wrap gap-1 mt-2">
+                            {% for feature in product.features.split(',') %}
+                            <span class="bg-secondary-container/50 text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-label-caps">{{ feature.strip() }}</span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="col-span-full text-center py-12 text-on-surface-variant">
+                    No se encontraron productos con los filtros seleccionados.
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Paginación (estática de ejemplo) -->
+            <div class="mt-20 flex justify-center items-center gap-2">
+                <button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-primary hover:bg-surface-container transition-colors">
+                    <span class="material-symbols-outlined">chevron_left</span>
+                </button>
+                <button class="w-10 h-10 flex items-center justify-center bg-primary text-on-primary rounded-lg font-headline-md">1</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-primary hover:bg-surface-container transition-colors font-headline-md">2</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-primary hover:bg-surface-container transition-colors font-headline-md">3</button>
+                <span class="px-2 text-outline">...</span>
+                <button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-primary hover:bg-surface-container transition-colors font-headline-md">12</button>
+                <button class="w-10 h-10 flex items-center justify-center border border-outline-variant rounded-lg text-primary hover:bg-surface-container transition-colors">
+                    <span class="material-symbols-outlined">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Visual Health Tracker Component -->
+<section class="max-w-7xl mx-auto px-8 mb-24">
+    <div class="bg-primary-container rounded-2xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+        <div class="absolute top-0 right-0 w-64 h-64 bg-secondary/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+        <div class="relative z-10 max-w-xl">
+            <h2 class="font-headline-lg text-white mb-4">Mantén tu Claridad Visual</h2>
+            <p class="text-on-primary-container font-body-lg mb-8">Los expertos recomiendan un examen completo cada 12-24 meses.</p>
+            <div class="bg-white/10 backdrop-blur rounded-xl p-6 border border-white/10">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-white font-headline-md text-sm">Último Examen: Oct 2023</span>
+                    <span class="text-secondary-fixed-dim font-headline-md text-sm">Próximo: Oct 2024</span>
+                </div>
+                <div class="w-full bg-white/20 h-2 rounded-full overflow-hidden">
+                    <div class="bg-secondary h-full w-[65%]"></div>
+                </div>
+                <div class="mt-4 flex items-center gap-2 text-secondary-fixed-dim text-xs font-label-caps">
+                    <span class="material-symbols-outlined text-sm">schedule</span> 4 meses hasta el próximo chequeo
+                </div>
+            </div>
+        </div>
+        <div class="relative z-10">
+            <button class="bg-secondary text-on-secondary px-8 py-4 rounded-xl font-headline-md hover:brightness-110 active:scale-95 transition-all shadow-xl shadow-secondary/20">
+                Agendar Examen
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}
